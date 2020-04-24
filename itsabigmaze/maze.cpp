@@ -1,15 +1,33 @@
-
 // maze.cpp 
-#include "maze.h" #include <iterator> 
-maze::maze(int xDim, int yDim, ifstream &input) {
-	this->xDim = xDim;  this->yDim = yDim;  dims = xDim * yDim;  graph.resize(2 * dims);
-	cout << "maze: " << endl;  for (int y = 0; y < yDim; y++) { for (int x = 0; x < xDim; x++) { input >> *this;    if (tile[y*yDim + x] < 0) { cout << " " << tile[y*xDim + x]; } else cout << "  " << tile[y*xDim + x]; }   cout << endl; }
+#include "maze.h"
+#include <iterator> 
 
-	for (int i = dims; i < 2 * dims; i++) {
-		tile.push_back(tile[i - dims]);   // cout << tile[i]; just for checking if tile was added to list
-	}  cout << endl << endl;  calcAdj(); } 
-maze::~maze() { tile.clear();  graph.clear();  state.clear();  parent.clear();  position.clear(); }
-istream &operator>>(istream &input, maze &maze) { int temp;  input >> temp;  maze.tile.push_back(temp);  return input; }
+maze::maze(int xDim, int yDim, ifstream &input) {
+	this->xDim = xDim;
+	this->yDim = yDim;
+	dims = xDim * yDim;
+	graph.resize(2 * dims);
+	cout << "maze: " << endl;  
+	for (int y = 0; y < yDim; y++) {
+		for (int x = 0; x < xDim; x++) {
+			input >> *this;
+			if (tile[y*yDim + x] < 0) cout << " " << tile[y*xDim + x];
+		else cout << "  " << tile[y*xDim + x];
+		}
+		cout << endl;
+	}
+
+	for (int i = dims; i < 2 * dims; i++) tile.push_back(tile[i - dims]); 
+	cout << endl << endl;  calcAdj();
+} 
+
+istream &operator>>(istream &input, maze &maze) {
+	int temp;
+	input >> temp;
+	maze.tile.push_back(temp);
+	return input;
+}
+
 void maze::calcAdj() {  // adjacency list for horizontal/vertical tiles
 	for (int i = 0; i < dims; i++) {   int jMag = abs(tile[i]);   int xPos = i % xDim; 
 		if (tile[i] > 0) {
