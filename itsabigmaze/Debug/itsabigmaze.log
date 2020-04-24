@@ -1,0 +1,7 @@
+﻿  main.cpp
+  maze.cpp
+c:\users\kstrayer\source\repos\itsabigmaze\itsabigmaze\maze.cpp(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\kstrayer\source\repos\itsabigmaze\itsabigmaze\maze.cpp(105): warning C4018: '<': signed/unsigned mismatch
+c:\users\kstrayer\source\repos\itsabigmaze\itsabigmaze\maze.cpp(110): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  itsabigmaze.vcxproj -> C:\Users\kstrayer\source\repos\itsabigmaze\Debug\itsabigmaze.exe
