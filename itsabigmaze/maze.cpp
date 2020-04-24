@@ -18,7 +18,8 @@ maze::maze(int xDim, int yDim, ifstream &input) {
 	}
 
 	for (int i = dims; i < 2 * dims; i++) tile.push_back(tile[i - dims]); 
-	cout << endl << endl;  calcAdj();
+	cout << endl << endl; 
+	calcAdj();
 } 
 
 istream &operator>>(istream &input, maze &maze) {
@@ -29,53 +30,55 @@ istream &operator>>(istream &input, maze &maze) {
 }
 
 void maze::calcAdj() {  // adjacency list for horizontal/vertical tiles
-	for (int i = 0; i < dims; i++) {   int jMag = abs(tile[i]);   int xPos = i % xDim; 
+	for (int i = 0; i < dims; i++) {
+		int jMag = abs(tile[i]);   int xPos = i % xDim;
 		if (tile[i] > 0) {
-			if (xPos + jMag <= xDim - 1) {  // right boundary check 
+			if (xPos + jMag <= xDim - 1)			  // right boundary check 
 				graph[i].push_back(jMag + i);
-			}   
-			if (jMag * xDim + i <= dims - 1) { // bottom boundary check
+			if (jMag * xDim + i <= dims - 1)		  // bottom boundary check
 				graph[i].push_back(jMag * xDim + i);
-			}
-			if (xPos - jMag >= 0) {    // left boundary check
+			if (xPos - jMag >= 0)					  // left boundary check
 				graph[i].push_back(i - jMag);
-			}
-			if (i - (jMag * xDim) >= 0) {  // top boundary check
+			if (i - (jMag * xDim) >= 0) {			  // top boundary check
 				graph[i].push_back(i - (jMag * xDim));
 			}
-		}
-		// switching to diagonal tiles (second half of graph)
-		if (tile[i] < 0) {
-			if ((xPos + jMag <= xDim - 1) && (jMag * xDim + i <= dims - 1)) {  // bottom right boundary check
-				graph[i].push_back(i + (jMag* xDim) + jMag + dims);
-			}
-			if ((xPos - jMag >= 0) && (jMag* xDim + i <= dims - 1)) {   // bottom left boundary check
-				graph[i].push_back(i + (jMag* xDim) - jMag + dims);
-			}
-			if (((xPos + jMag <= xDim - 1)) && (i - (jMag* xDim) >= 0)) {    // top right boundary check
-				graph[i].push_back(i - (jMag* xDim) + jMag + dims);
-			}
-			if (((xPos - jMag >= 0)) && (i - (jMag* xDim) >= 0)) {      // bottom left boundary check
-				graph[i].push_back(i - (jMag* xDim) - jMag + dims);
+			// switching to diagonal tiles (second half of graph)
+			if (tile[i] < 0) {
+				if ((xPos + jMag <= xDim - 1) && (jMag * xDim + i <= dims - 1))  // bottom right boundary check
+					graph[i].push_back(i + (jMag* xDim) + jMag + dims);
+				if ((xPos - jMag >= 0) && (jMag* xDim + i <= dims - 1))		     // bottom left boundary check
+					graph[i].push_back(i + (jMag* xDim) - jMag + dims);
+				if (((xPos + jMag <= xDim - 1)) && (i - (jMag* xDim) >= 0))      // top right boundary check
+					graph[i].push_back(i - (jMag* xDim) + jMag + dims);
+				if (((xPos - jMag >= 0)) && (i - (jMag* xDim) >= 0))		     // bottom left boundary check
+					graph[i].push_back(i - (jMag* xDim) - jMag + dims);
 			}
 		}
-	} 
-	// adjacency list for diagonal jumps  
-	for (int i = dims; i < 2 * dims; i++) {
-		int jMag = abs(tile[i]);
-		int xPos = i % xDim;
-		if (tile[i] > 0) {
-			if ((xPos + jMag <= xDim - 1) && (jMag * xDim + i <= 2 * dims - 1))	graph[i].push_back(i + (jMag * xDim) + jMag);
-			if ((xPos - jMag >= 0) && (jMag * xDim + i <= 2 * dims - 1)) graph[i].push_back(i + (jMag * xDim) - jMag);
-			if (((xPos + jMag <= xDim - 1)) && (i - (jMag * xDim) >= dims))	graph[i].push_back(i - (jMag * xDim) + jMag);
-			if (((xPos - jMag >= 0)) && (i - (jMag * xDim) >= dims)) graph[i].push_back(i - (jMag * xDim) - jMag);
-		}
-		// switch to horizontal/vertical jumps (first half of graph) 
-		if (tile[i] < 0) {
-			if (xPos + jMag <= xDim - 1) graph[i].push_back(jMag + i - dims);
-			if (jMag* xDim + i <= 2 * dims - 1) graph[i].push_back(jMag* xDim + i - dims);
-			if (xPos - jMag >= 0) graph[i].push_back(i - jMag - dims);
-			if (i - (jMag* xDim) >= dims) graph[i].push_back(i - (jMag * xDim) - dims);
+		// adjacency list for diagonal jumps  
+		for (int i = dims; i < 2 * dims; i++) {
+			int jMag = abs(tile[i]);
+			int xPos = i % xDim;
+			if (tile[i] > 0) {
+				if ((xPos + jMag <= xDim - 1) && (jMag * xDim + i <= 2 * dims - 1))
+					graph[i].push_back(i + (jMag * xDim) + jMag);
+				if ((xPos - jMag >= 0) && (jMag * xDim + i <= 2 * dims - 1))
+					graph[i].push_back(i + (jMag * xDim) - jMag);
+				if (((xPos + jMag <= xDim - 1)) && (i - (jMag * xDim) >= dims))
+					graph[i].push_back(i - (jMag * xDim) + jMag);
+				if (((xPos - jMag >= 0)) && (i - (jMag * xDim) >= dims))
+					graph[i].push_back(i - (jMag * xDim) - jMag);
+			}
+			// switch to horizontal/vertical jumps (first half of graph) 
+			if (tile[i] < 0) {
+				if (xPos + jMag <= xDim - 1)
+					graph[i].push_back(jMag + i - dims);
+				if (jMag* xDim + i <= 2 * dims - 1)
+					graph[i].push_back(jMag* xDim + i - dims);
+				if (xPos - jMag >= 0)
+					graph[i].push_back(i - jMag - dims);
+				if (i - (jMag* xDim) >= dims)
+					graph[i].push_back(i - (jMag * xDim) - dims);
+			}
 		}
 	}
 }
